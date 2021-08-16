@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="layout.css"></link>
+    <title>ERS - Reimbursement Requests</title>
+  </head>
+  <body>
+    <header>
+	  <nav class="navbar navbar-inverse">
+	  <div class="container">
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand" href="EmployeeHomepage.html">ERS</a>
+	    </div>
+	
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="ManagerHomepage.html"><span class="glyphicon glyphicon-home"></span>&emsp;Home</a></li>
+	        <li class="active"><a href="#"><span class="glyphicon glyphicon-usd"></span>Reimbursement Requests </a></li>
+	        <li class="dropdown">
+	          <a href="ManagerHomepage.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user">Profile <span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="ManagerHomepage.html">View Profile</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li id="logout"><a href="login.html">Logout</a></li>
+	          </ul>
+	        </li>
+	      </ul>
+	      <p class="navbar-text navbar-right">Signed in as Manager</p>
+	    </div>
+	  </div>
+	</nav>
+    </header>
+  	<section  class="container">
+  	    <div class="row">
+  	        <div class="page-header">
+		  	  <h1>Expense Reimbursement System</h1>
+		  	
+		    <div class="alert alert-danger hideme" id="errordiv"></div>
+		    <div class="alert alert-success hideme" id="successdiv"></div>
+  	    </div>
+
+
+		<div class="row">
+		  <p>
+		    Use the tabs below to navigate.
+		  </p>
+		</div>
+		<div class="row">
+			<ul class="nav nav-tabs">
+			<li id="employee-all" role="tab"><a data-toggle="tab" href="#all-requests" onclick="allreq()">All Requests</a></li>
+			  <li id="employee-pending" role="tab"><a data-toggle="tab" href="#pending-requests" onclick="pending()">Pending Requests</a></li>
+			  <li id="employee-resolved" role="tab"><a data-toggle="tab" href="#resolved-requests" onclick="resolved()">Resolved Requests</a></li>
+			</ul>
+			<div class="tab-content">
+
+
+				<div role="tabpanel" class="tab-pane active" id="all-requests">
+					<script>
+						function allreq(){
+				fetch('http://localhost:8080/expReimbursement/webapi/controller/viewallreq')
+				.then((response)=>response.json())
+				.then((json)=>displayProfile(json))
+				.catch(err=>console.log('Request failed'));
+				function displayProfile(response)
+				 {
+				  console.log("test2");
+				   console.log("arun");
+					
+					console.log(response);
+				  
+					let output='';
+						  output=`<br><br><center><table class="pend" style="column-gap:40px">
+							  <thead><tr>
+						  <th class="col-md-1">Reimbursement Request No.</th>
+						  <th class="col-md-1">Name</th>
+						  <th class="col-md-3">Description</th>
+						  <th class="col-md-1">Status</th>
+						  <th class="col-md-1">Amount</th>
+						  <th class="col-md-2">Date Submitted</th>
+						  <th class="col-md-1">EmployeeId</th>
+						</thead><tbody>`;
+						  for(var d1 of response){
+							var req=new Date(d1.dateofreq).toLocaleDateString("en-US");	
+								 output+=`<tr>
+										  
+										  <td>${d1.reqNo}</td>
+										  
+										  <td>${d1.rname}</td>
+										  
+										  <td>${d1.description}</td>
+										  <td>${d1.status}</td>
+										  <td>${d1.amt}</td>
+										  <td>${req}</td>
+										  <td>${d1.id}</td>
+									  </tr>`;
+						  }
+									  output+=`
+									  </tbody></table></center>`;
+						  document.getElementById("all-requests").innerHTML=output;
+					  }    
+					  function update(){
+						  window.location.href="http://localhost:8080/Employee/MprofileUpdate.html";       
+					  }
+				  }
+		</script>
+	  </div>
+
+
+
+
+
+		  <div role="tabpanel" class="tab-pane"  id="pending-requests">
+				<script>
+					function pending(){
+					fetch('http://localhost:8080/expReimbursement/webapi/controller/viewmanagerreq')
+					.then((response)=>response.json())
+					.then((json)=>displayProfile(json))
+					.catch(err=>console.log('Request failed'));
+					function displayProfile(response)
+					 {
+					  console.log("test2");
+					   console.log("arun");
+						
+						console.log(response);
+					  //  var req=new Date(d1.dob).toLocaleDateString("en-US");
+						let output='';
+							  output=`<br><br><center><table class="table table-bordered table-striped table-hover">
+								  <thead><tr>
+								
+							  <th class="col-md-1">Reimbursement Request No.</th>
+							  <th class="col-md-1">Name</th>
+							  <th class="col-md-3">Description</th>
+							  <th class="col-md-1">Status</th>
+							  <th class="col-md-1">Amount</th>
+							  <th class="col-md-2">Date Submitted</th>
+							  <th class="col-md-1">EmployeeId</th>
+							</thead><tbody>`;
+							  for(var d1 of response){
+												
+									 output+=`<tr>
+											  
+											  <td>${d1.reqNo}</td>
+											  
+											  <td>${d1.rname}</td>
+											  
+											  <td>${d1.description}</td>
+											  <td>${d1.status}</td>
+											  <td>${d1.amt}</td>
+											  <td>${d1.dateofreq}</td>
+											  <td>${d1.id}</td>
+				
+											 <td> <button class="btn btn-success approve" onclick="update(${d1.reqNo},${d1.id})">Approve</button></td>
+											 <td><button class="btn btn-danger deny" onclick="rejected(${d1.reqNo},${d1.id})">Deny</button></td>
+										  </tr>`;
+							  }
+										  output+=`
+										  </tbody></table></center>`;
+							  document.getElementById("pending-requests").innerHTML=output;
+						  }    
+						}
+
+						
+		function update(reqNo,id){
+							
+	
+        
+          var obj={"reqNo":reqNo,"id":id};
+          console.log(obj);
+    
+          fetch("http://localhost:8080/expReimbursement/webapi/controller/updaterequest", {
+                  body: JSON.stringify(obj),
+                  headers: {
+                      "Content-Type": "application/json"
+                  },
+                  method: "PUT"
+              })
+            .then((response)=>response.json())
+            .then((json)=>displayProfile(json))
+            .catch(err=>console.log('Request failed'));
+        function displayProfile(res)
+        {  
+          
+            console.log(2);
+            
+                  if(res.status==="true")
+                  {
+                    alert("updated succesfully");
+				  }
+                  
+                  else
+                  {
+                      alert("server error");
+                  } 
+            
+         
+         
+                }
+
+						  }	  
+					
+						  
+						  function rejected(reqNo,id)
+						  {
+							var obj={"reqNo":reqNo,"id":id};
+							console.log(obj);
+					  
+							fetch("http://localhost:8080/expReimbursement/webapi/controller/rejected", {
+									body: JSON.stringify(obj),
+									headers: {
+										"Content-Type": "application/json"
+									},
+									method: "PUT"
+								})
+							  .then((response)=>response.json())
+							  .then((json)=>displayProfile(json))
+							  .catch(err=>console.log('Request failed'));
+						  function displayProfile(res)
+						  {  
+							
+							  console.log(2);
+							  
+									if(res.status==="true")
+									{
+									  alert("REJECTED");
+									}
+									
+									else
+									{
+										alert("server error");
+									} 
+							  
+						   
+						   
+								  }
+				  
+								}	  
+
+
+
+
+						//<button class="btn btn-info">View Receipt</button>
+                        
+			</script>
+		
+		  </div>
+
+
+
+
+
+
+
+
+
+
+		     <div role="tabpanel" class="tab-pane" id="resolved-requests">
+
+
+
+				<script>
+					function resolved(){
+					fetch('http://localhost:8080/expReimbursement/webapi/controller/viewallresolved')
+					.then((response)=>response.json())
+					.then((json)=>displayProfile(json))
+					.catch(err=>console.log('Request failed'));
+					function displayProfile(response)
+					 {
+					  console.log("test2");
+					   console.log("arun");
+						
+						console.log(response);
+					  //  var req=new Date(d1.dob).toLocaleDateString("en-US");
+						let output='';
+							  output=`<br><br><center><table class="table table-bordered table-striped table-hover">
+								  <thead><tr>
+							  <th class="col-md-1">Reimbursement Request No.</th>
+							  <th class="col-md-1">Name</th>
+							  <th class="col-md-3">Description</th>
+							  <th class="col-md-1">Status</th>
+							  <th class="col-md-1">Amount</th>
+							  
+							  <th class="col-md-2">Date Submitted</th>
+						  
+							</thead><tbody>`;
+							  for(var d1 of response){
+												
+									 output+=`<tr>
+											  
+											  <td>${d1.reqNo}</td>
+											  
+											  <td>${d1.rname}</td>
+											  
+											  <td>${d1.description}</td>
+											  <td>${d1.status}</td>
+											  <td>${d1.amt}</td>
+											  <td>${d1.dateofreq}</td>
+										  
+										  </tr>`;
+							  }
+										  output+=`
+										  </tbody></table></center>`;
+							  document.getElementById("resolved-requests").innerHTML=output;
+						  }    
+						  function update(){
+							  window.location.href="http://localhost:8080/Employee/MprofileUpdate.html";       
+						  }
+						}	  
+			</script>
+		  </div>
+
+
+
+
+
+
+
+
+
+	        </div><!-- end tab content -->
+		</div><!-- end row -->
+	</section>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+</html>

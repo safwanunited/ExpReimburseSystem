@@ -1,0 +1,181 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="layout.css"></link>
+    <title>ERS - Reimbursement Requests</title>
+  </head>
+  <body>
+
+
+
+
+
+<form>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>First name:</strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control "id="fname" >
+    </div>
+      
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>Last name: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control "id="lname">
+       
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-4 control-label"><strong>designation: </strong></label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="des">
+         
+        </div>
+
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong> Password: </strong></label>
+      <div class="col-sm-8">
+        <input type="password" class="form-control " id="pass">
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label"><strong> Confirm Password: </strong></label>
+        <div class="col-sm-8">
+          <input type="password" class="form-control " id="cpass">
+      </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>Email: </strong></label>
+      <div class="col-sm-8">
+        <input type="email" class="form-control" name="email" id="email">
+       
+      </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-4 control-label"><strong>PanCard: </strong></label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control " name="pan"id="pan">
+         
+        </div>
+    
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>Phone number: </strong></label>
+      <div class="col-sm-8">
+        <input type="tel" class="form-control " name="phno"id="phno">
+       
+      </div>
+     <div class="form-group">
+        <label class="col-sm-4 control-label"><strong>Date of Birth: </strong></label>
+        <div class="col-sm-8">
+          <input type="date" class="form-control " name="dob" id="dob">
+         
+        </div>
+
+
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>Address: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control " name="address" id="add">
+       
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>City: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control" name="city" id="city">
+        
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>State: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control " name="state" id="state">
+        
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong>Country: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control " name="country" id="country">
+       
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-4 control-label"><strong> Pin-code: </strong></label>
+      <div class="col-sm-8">
+        <input type="text" class="form-control " name="pin" id="pin">
+       
+      </div>
+    
+    </div>
+    <div class="col-sm-offset-4 col-sm-8">
+      <button id="submit" type="button" class="btn btn-primary" onclick="insert()">Register</button>
+      
+    </div>
+  </form>
+  <script>
+    function insert()
+    { 
+      //var des1=document.myform.login.value;
+      var fname=document.getElementById('fname').value;
+      var lname=document.getElementById('lname').value;
+      var pass=document.getElementById('pass').value;
+      var cpass=document.getElementById('cpass').value;     
+      var email=document.getElementById('email').value;  
+      var pan=document.getElementById('pan').value;
+      var phno=document.getElementById('phno').value;     
+      var dob=document.getElementById('dob').value;     
+      var add=document.getElementById('add').value;
+      var city=document.getElementById('city').value;
+      var state=document.getElementById('state').value;
+      var country=document.getElementById('country').value;
+      var pin=document.getElementById('pin').value;
+      var des=document.getElementById('des').value;     
+
+        if(pass===cpass)
+        {
+            var obj={"fname":fname,"lname":lname,"pwd":pass,"email":email,"pan":pan,"phno":phno,"dob":dob,"add":add,"city":city,"state":state,"country":country,"pin":pin,"des":des};
+      console.log(obj);
+
+      fetch("http://localhost:8080/expReimbursement/webapi/controller/insert", {
+              body: JSON.stringify(obj),
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              method: "POST"
+          })
+        .then((response)=>response.json())
+        .then((json)=>displayProfile(json))
+        .catch(err=>console.log('Request failed'));
+    function displayProfile(res)
+    {  
+     
+             if(res.status==="true")
+              {
+                alert("registered sucessfully");              }
+              else
+              {
+                  alert("not registered");
+              } 
+    }
+        }
+
+
+    }
+</script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+  </body>
+  </html>
