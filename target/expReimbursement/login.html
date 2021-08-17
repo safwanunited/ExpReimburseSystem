@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	  <link rel="stylesheet" href="layout.css">
+    <title>ERS Sign In</title>
+    <style>
+      body{
+
+        background-image: url('login-background.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+      }
+
+
+    </style>
+  </head>
+  <body class="container">
+    <div class="page-header">
+      <h1>Login To ERS - Expense Reimbursement System</h1>
+    </div>
+  
+  <form name="myform" method ="POST">
+        <div class="form-group">
+              <label for="userName">UserId</label>
+              <input id= "ui" class="form-control" type="number" name="username" placeholder="username" required/>
+        </div>
+          <div class="form-group">
+              <label for="userPass">Password</label>
+              <input id="pd" class="form-control" type="password" name="userpass" placeholder="password" required/>
+          </div>
+         <input type="radio" id="des1" name="login" value="employee"/>
+  <label for="emp">employee</label>
+  <input type="radio" id="des2" name="login"value="manager" >
+  <label for="mgr">manager</label><br> <br>
+  <button type="button" class="btn btn-primary" onclick="fetch1()" >SUBMIT</button>
+  </form>
+<script>
+    function fetch1(){ 
+      var des1=document.myform.login.value;
+      var id=document.getElementById('ui').value;
+      var psd=document.getElementById('pd').value;
+      var obj={"uid":id,"pwd":psd,"des":des1};
+      console.log(obj);
+
+      fetch("http://http://3.129.206.239:8081//expReimbursement/webapi/controller/login", {
+              body: JSON.stringify(obj),
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              method: "POST"
+          })
+        .then((response)=>response.json())
+        .then((json)=>displayProfile(json))
+        .catch(err=>console.log('Request failed'));
+    function displayProfile(res){  
+      if(des1==="employee")
+      {
+        console.log(2);
+        
+              if(res.status==="true")
+              {
+                      window.location.href="EmployeeHomePage.html";
+              }
+              else
+              {
+                  alert("Incorrect password");
+              } 
+        }
+      else if(des1==="manager")
+      {
+        console.log("3");
+        
+              if(res.status==="true")
+              {
+                      window.location.href="ManagerHomePage.html";
+              }
+              else
+              {
+                  alert("Incorrect password");} 
+              }               
+      else
+      {
+        alert("No designation selected");
+      }
+   }
+}
+</script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </body>
+  </html>

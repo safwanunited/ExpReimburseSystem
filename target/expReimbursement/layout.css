@@ -1,0 +1,14 @@
+  
+.hideme {
+	display: none;
+}
+.no-bottom-margin .form-group {
+	margin-bottom: 5px;
+
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #c5c5c5;
+}
+.navbar {
+	border-radius: 0;
+}
